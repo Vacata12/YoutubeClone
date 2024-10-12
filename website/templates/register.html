@@ -9,31 +9,52 @@
           <div class="card" style="border-radius: 15px;">
             <div class="card-body p-5">
               <h2 class="text-uppercase text-center mb-5">Create an account</h2>
-              <form>
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="form3Example1cg">Your Name</label>
-                  <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
+              <form method="POST">
+                <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="Enter email"
+                  />
                 </div>
 
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="form3Example3cg">Your Email</label>
-                  <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input
+                    type="username"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    placeholder="Enter username"
+                  />
                 </div>
 
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="form3Example4cg">Password</label>
-                  <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Enter password"
+                  />
                 </div>
 
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="form3Example4cdg">Repeat your password</label>
-                  <input type="password" id="form3Example4cdg" class="form-control form-control-lg" />
+                <div class="form-group">
+                  <label for="confirmPassword">confirm Password</label>
+                  <input
+                    type="confirmPassword"
+                    class="form-control"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Enter confirmPassword"
+                  />
                 </div>
 
-                <div class="d-flex justify-content-center">
-                  <button  type="button" data-mdb-button-init
-                    data-mdb-ripple-init class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
-                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
 
                 <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/login"
                     class="fw-bold text-body"><u>Login here</u></a></p>
