@@ -2,12 +2,11 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
-from werkzeug.utils import secure_filename
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
-UPLOAD_FOLDER = "/UploadFolder/"
-ALLOWED_EXTENSIONs = ["mkv", "MP4"]
+UPLOAD_FOLDER = "/Users/ivanstoynev/Downloads/UploadFolder"
+ALLOWED_EXTENSIONS = ["mkv", "MP4"]
 
 def createApp():
     app = Flask(__name__)
@@ -27,5 +26,13 @@ def createApp():
         with app.app_context():
             db.create_all()
             print("Created Database")
+
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
+    
+    @login_manager.user_loader
+    def load_user(id):
+        return User.query.get(int(id))
     
     return app

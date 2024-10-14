@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import User
-from . import db
+from .models import User, Video
+from . import db, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
 from flask_login import login_user, login_required, logout_user, current_user
-import json
-
+from werkzeug.utils import secure_filename
+import os
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods = ["GET", "POST"])
@@ -20,7 +20,7 @@ def login():
                 flash("Wrong password!", category="error")
             else:
                 flash("Logged successfully!", category="success")
-                login_user = (user)
+                login_user(user, remember=True)
                 return redirect(url_for("views.home"))
         else:
             flash("User does not exist!", category="error")
@@ -32,7 +32,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('views.home', user=current_user))
+    return redirect(url_for('views.home'))
 
 @auth.route('/register', methods = ["GET", "POST"])
 def register():
@@ -60,4 +60,32 @@ def register():
             return redirect(url_for("views.home", user=current_user))
     elif request.method == "GET":
         print("Ivan Glupak")    
-    return render_template("register.html")
+    return render_template("register.html", user=current_user)
+
+def allowedFiles(filename):
+    return "." in filename and \
+        filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+        
+@auth.route("/upload", methods = ["GET", "POST"])
+def uploadFile():
+    if request.method == "POST":
+        title = request.form.get("title")
+        desc = request.form.get("desc")
+        if "file" not in request.files:
+            flash("No file part!", category="error")
+            return redirect(request.url)
+        upFile = request.files["file"]
+        if upFile.filename == "":
+            flash("No selected file!", category="error")
+        if upFile and allowedFiles(upFile.filename):
+            filename = secure_filename(upFile.filename)
+        if upFile == "":
+            flash("No selected file!", category="error")
+        if not upFile and ALLOWED_EXTENSIONS(upFile):
+            flash("No correct standart!", category="error")
+        else:
+            upFile.save(os.path.join(UPLOAD_FOLDER, upFile.filename))
+            newVideo = Video(title=title, desc=desc, uploadPath=os.path.join(UPLOAD_FOLDER, upFile.filename),linkPath="", userId=current_user.id)
+            db.session.add(newVideo)
+            db.session.commit()
+    return render_template("upload.html", user=current_user)
