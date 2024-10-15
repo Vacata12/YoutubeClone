@@ -85,7 +85,7 @@ def uploadFile():
             flash("No correct standart!", category="error")
         else:
             upFile.save(os.path.join(UPLOAD_FOLDER, upFile.filename))
-            newVideo = Video(title=title, desc=desc, uploadPath=os.path.join(UPLOAD_FOLDER, upFile.filename),linkPath="", userId=current_user.id)
+            newVideo = Video(title=title, desc=desc, uploadPath="/UploadFolder/" + upFile.filename,linkPath="", userId=current_user.id)
             db.session.add(newVideo)
             db.session.commit()
     return render_template("upload.html", user=current_user)

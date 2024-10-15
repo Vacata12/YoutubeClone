@@ -5,7 +5,7 @@ from flask_login import LoginManager
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
-UPLOAD_FOLDER = "/Users/ivanstoynev/Downloads/UploadFolder"
+UPLOAD_FOLDER = "/Users/ivanstoynev/Documents/Python/YoutubeClone/website/static/UploadFolder"
 ALLOWED_EXTENSIONS = ["mkv", "MP4"]
 
 def createApp():
