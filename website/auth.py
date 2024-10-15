@@ -89,3 +89,8 @@ def uploadFile():
             db.session.add(newVideo)
             db.session.commit()
     return render_template("upload.html", user=current_user)
+
+@auth.route('/video/<int:videoId>')
+def video(videoId):
+    findVideo = Video.query.get_or_404(videoId)
+    return render_template("video.html", user=current_user, video=findVideo)

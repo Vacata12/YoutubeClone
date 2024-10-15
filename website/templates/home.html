@@ -1,4 +1,24 @@
 {% extends "base.html" %} 
 {% block content %}
-
+    {% for video in videos %}
+    <div class="video-container">
+        {% for video in videos %}
+            <form>
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        {% if video.uploadPath %}
+                            <video width="100%" height="100%" controls poster="static/path_to_default_thumbnail.jpg">
+                                <source src="{{ url_for('static', filename=video.uploadPath) }}" type="video/mp4">
+                            </video>
+                        {% endif %}
+                    </div>
+                    <div class="video-info">
+                        <a href="/video/{{video.id}}" class="video-title">{{ video.title }}</a>
+                        <p class="video-desc">{{ video.desc }}</p>
+                    </div>
+                </div>
+            </form>
+        {% endfor %}
+    </div>
+    {% endfor %}
 {% endblock %}
