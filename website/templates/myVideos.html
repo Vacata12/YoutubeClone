@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+    {% for video in user.videos %}
+        <li class="list-group-item">
+            {{video.title}}
+            <button type="button" class="close" onClick="deleteVideo({{video.id}})">
+                Delete
+            </button>
+        </li>
+    {% endfor %}
+{% endblock content %}

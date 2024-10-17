@@ -6,6 +6,7 @@ from . import db, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 import os
+import json
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods = ["GET", "POST"])
@@ -67,6 +68,7 @@ def allowedFiles(filename):
         filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
         
 @auth.route("/upload", methods = ["GET", "POST"])
+@login_required
 def uploadFile():
     if request.method == "POST":
         title = request.form.get("title")
@@ -94,3 +96,20 @@ def uploadFile():
 def video(videoId):
     findVideo = Video.query.get_or_404(videoId)
     return render_template("video.html", user=current_user, video=findVideo)
+
+@auth.route("/myVideos")
+@login_required
+def myVideos():
+    return render_template("myVideos.html", user=current_user)
+
+@auth.route("/deleteVideo", methods=["POST"])
+def deleteVideo():
+    video = json.loads(request.data)
+    videoId = video["videoId"]
+    video = Video.query.get(videoId)
+    if video:
+        if video.userId == current_user.id:
+            db.session.delete(video)
+            db.session.commit()
+    
+    return jsonify({})

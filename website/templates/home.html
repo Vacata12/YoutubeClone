@@ -7,7 +7,7 @@
                 <div class="video-card">
                     <div class="video-thumbnail">
                         {% if video.uploadPath %}
-                            <video width="100%" height="100%" controls poster="static/path_to_default_thumbnail.jpg">
+                            <video width="100%" height="100%" controls>
                                 <source src="{{ url_for('static', filename=video.uploadPath) }}" type="video/mp4">
                             </video>
                         {% endif %}
