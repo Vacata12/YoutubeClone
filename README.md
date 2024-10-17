@@ -6,5 +6,5 @@ A simple Flask application that mimics basic YouTube functionalities, including 
 
 - **User Accounts**: Sign up, log in, and log out.
 - **Video Upload**: Upload `.mp4` and `.mkv` video files.
-- **Comments**: Leave comments on videos.
+- **Comments**: Leave comments on videos. (still working on it)
 - **Browse Videos**: View uploaded videos and browse recommendations.
