@@ -96,6 +96,7 @@ def uploadFile():
     return render_template("upload.html", user=current_user)
 
 @auth.route('/video/<int:videoId>', methods = ["GET", "POST"])
+@login_required
 def video(videoId):
     findVideo = Video.query.get_or_404(videoId)
     form = CommentForm()
@@ -121,5 +122,16 @@ def deleteVideo():
         if video.userId == current_user.id:
             db.session.delete(video)
             db.session.commit()
+    
+    return jsonify({})
+
+@auth.route("/deleteComment", methods = ["POST"])
+def deleteComment():
+    comment = json.loads(request.data)
+    commentId = comment["commentId"]
+    comment = Comment.query.get(commentId)
+    if comment:
+        db.session.delete(comment)
+        db.session.commit()
     
     return jsonify({})
