@@ -13,17 +13,27 @@
         </div>
         <div class="video-title">{{ video.title }}</div>
 
-        <!-- Comments Section -->
+
+        <form method="POST">
+            {{form.hidden_tag()}}
+            <p>
+                {{ form.content.label }}
+                <br>
+                {{form.content(size=1024)}}
+            </p>
+            <p>
+                {{form.submit}}
+            </p>
+        </form>
         <div class="comments-section">
             <h3>Comments</h3>
-            <div class="comment">
-                <p><strong>User1</strong></p>
-                <p>Nice video!</p>
-            </div>
-            <div class="comment">
-                <p><strong>User2</strong></p>
-                <p>Thanks for sharing.</p>
-            </div>
+            {% for comment in video.comments %}
+                <div class="comment">
+                    <p><strong>{{"Still Working on it"}}</strong></p>
+                    <p>comment.date</p>
+                    <p>comment.text</p>
+                </div>
+            {% endfor %}
         </div>
     </div>
 

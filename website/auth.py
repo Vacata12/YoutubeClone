@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import User, Video
+from .models import User, Video, Comment
 from . import db, ALLOWED_EXTENSIONS, UPLOAD_FOLDER
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
+from datetime import date
+from .forms import CommentForm
 import os
 import json
 auth = Blueprint('auth', __name__)
@@ -63,6 +65,7 @@ def register():
         print("Ivan Glupak")    
     return render_template("register.html", user=current_user)
 
+#check if the extension of the file is allow
 def allowedFiles(filename):
     return "." in filename and \
         filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -95,7 +98,14 @@ def uploadFile():
 @auth.route('/video/<int:videoId>')
 def video(videoId):
     findVideo = Video.query.get_or_404(videoId)
-    return render_template("video.html", user=current_user, video=findVideo)
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(text=form.content.data, date=date.today ,userId = current_user.id, videoId=videoId)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Comment added!', 'success')
+        return redirect(url_for('video', videoId=videoId))
+    return render_template("video.html", user=current_user, video=findVideo, form=form)
 
 @auth.route("/myVideos")
 @login_required
