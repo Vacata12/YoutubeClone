@@ -95,16 +95,16 @@ def uploadFile():
             db.session.commit()
     return render_template("upload.html", user=current_user)
 
-@auth.route('/video/<int:videoId>')
+@auth.route('/video/<int:videoId>', methods = ["GET", "POST"])
 def video(videoId):
     findVideo = Video.query.get_or_404(videoId)
     form = CommentForm()
     if form.validate_on_submit():
-        comment = Comment(text=form.content.data, date=date.today ,userId = current_user.id, videoId=videoId)
+        comment = Comment(text=form.content.data, date=date.today() ,userId = current_user.id, videoId=videoId)
         db.session.add(comment)
         db.session.commit()
         flash('Comment added!', 'success')
-        return redirect(url_for('video', videoId=videoId))
+        return redirect(url_for('auth.video', videoId=videoId))
     return render_template("video.html", user=current_user, video=findVideo, form=form)
 
 @auth.route("/myVideos")
